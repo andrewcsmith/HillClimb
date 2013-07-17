@@ -3,8 +3,7 @@
 # ## Requirements for subclassing:
 # 
 # [:get_cost]             Cost function for a given candidate
-# [:get_candidate_list]   Returns a sorted list [cost, candidate] 
-#                         of all possible candidates
+# [:get_candidate_list]   Returns a sorted list of all possible candidates
 # 
 # TODO: Add caching to the core functionality of get_candidate_list
 class HillClimb
@@ -15,6 +14,8 @@ class HillClimb
     @epsilon            = options[:epsilon]         || 0.01
     @max_iterations     = options[:max_iterations]  || 1000
     @banned_points      = options[:banned_points]   || {}
+    @start_vector       = start_vector
+    @goal_vector        = goal_vector
   end
   
   def search
@@ -39,10 +40,12 @@ class HillClimb
                 # trying. Only works when candidate_list#size is the largest
                 # dimension, i.e., for a normal Array of NArrays. For NArray, 
                 # #size gives the total number of elements.
-                @inverval_index >= candidate_list.size ? throw(:jump_back, "interval_index #{@interval_index} is too large") : false
+                if @interval_index >= candidate_list.size 
+                  throw :jump_back, "index #{@interval_index} is out of range"
+                end
                 # Load up the candidate from the cost_vector
                 candidate = candidate_list[@interval_index]
-                candidate_cost = @current_cost
+                candidate_cost = get_cost candidate
                 # Skip all candidates that are banned, are already in the path, 
                 # or don't get us any closer.
                 while (@banned_points.has_key? candidate.hash) || (@path.include? candidate) || (candidate_cost >= @current_cost)
@@ -50,7 +53,7 @@ class HillClimb
                   # If we've exhausted all possible intervals, jump back
                   if @interval_index >= candidate_list.size
                     @banned_points[candidate.hash] = 1
-                    throw :jump_back, "interval_index #{@interval_index} is too large"
+                    throw :jump_back, "index #{@interval_index} is out of range"
                   end
                   # Get the movement that is at the current index
                   candidate = candidate_list[@interval_index]
@@ -97,24 +100,25 @@ class HillClimb
     end # catch :success
     debug_final_report
     prepare_data
-    [@current_point, @data]
+    @data
+  end
+  
+  def get_cost candidate
+    raise NoMethodError, 'get_cost should be defined in subclass of HillClimb'
+  end
+  
+  def get_candidate_list
+    raise NoMethodError, 'get_candidate_list should be defined in subclass of HillClimb'
   end
   
   def prepare_search
+    # puts "prepare_search called"
     @current_point = @start_vector
     @interval_index = 0
     @path = [@start_vector]
     @initial_run = true
     
     @current_cost = get_cost @current_point
-  end
-  
-  def get_cost candidate
-    raise 'get_cost should be defined in subclass of HillClimb'
-  end
-  
-  def get_candidate_list
-    raise 'get_candidate_list should be defined in subclass of HillClimb'
   end
   
   def debug_each_iteration iteration
@@ -149,6 +153,7 @@ class HillClimb
   
   # Before each run, checks to see if it's the initial run
   def prepare_each_run
+    # puts "prepare_each_run called"
     if @initial_run
       @interval_index = 0
       @initial_run = false
