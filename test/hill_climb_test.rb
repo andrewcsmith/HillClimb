@@ -53,6 +53,22 @@ class TestHillClimb < Minitest::Test
     assert_equal @hill_climb.send(:get_cost, @start_vector), @hill_climb.instance_variable_get(:@current_cost)
   end
   
+  def test_that_prepare_each_run_sets_initial_run_to_false
+    @hill_climb.extend GetCost
+    @hill_climb.send(:prepare_search)
+    assert @hill_climb.instance_variable_get(:@initial_run), "@initial_run should be true initially"
+    @hill_climb.send(:prepare_each_run)
+    refute @hill_climb.instance_variable_get(:@initial_run), "@initial_run should be false after run is prepared"
+  end
+  
+  def test_that_jump_back_decreases_path_size_by_1
+    skip, "Not yet written"
+  end
+  
+  def test_that_jump_back_changes_current_point_to_most_recent
+    skip, "Not yet written"
+  end
+  
   # == Full Functionality Tests
   # These tests will likely, but not necessarily, pass in subclasses
   

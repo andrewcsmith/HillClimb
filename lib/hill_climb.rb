@@ -103,6 +103,8 @@ class HillClimb
     @data
   end
   
+  private
+  
   def get_cost candidate
     raise NoMethodError, 'get_cost should be defined in subclass of HillClimb'
   end
