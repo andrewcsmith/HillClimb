@@ -1,3 +1,3 @@
 task :test do
-  ruby 'spec/hill_climb_spec.rb'
+  ruby 'test/hill_climb_test.rb'
 end
