@@ -147,10 +147,6 @@ class HillClimb
     end
   end
   
-  def keep_going
-    # To be subclassed
-  end
-  
   # Before each run, checks to see if it's the initial run
   def prepare_each_run
     if @initial_run
@@ -172,6 +168,7 @@ class HillClimb
   end
   
   # Dummy methods, not required
+  def keep_going; end
   def prepare_result; end
   def handle_range_error er; false; end
 end
