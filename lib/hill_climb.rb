@@ -31,15 +31,20 @@ class HillClimb
           debug_each_iteration iteration
           going = catch :keep_going do
             message = catch :jump_back do
-              # cost_vector is a list of all adjacent points with their respective costs
+              # cost_vector is a list of all adjacent points with their 
+              # respective costs
               candidate_list = get_candidate_list
               begin # IndexError rescue block
-                # If we've run out of all possible points, step back and keep trying. Only works when candidate_list#size is the largest dimension, i.e., for a normal Array of NArrays. For NArray, #size gives the total number of elements.
+                # If we've run out of all possible points, step back and keep 
+                # trying. Only works when candidate_list#size is the largest
+                # dimension, i.e., for a normal Array of NArrays. For NArray, 
+                # #size gives the total number of elements.
                 @inverval_index >= candidate_list.size ? throw(:jump_back, "interval_index #{@interval_index} is too large") : false
                 # Load up the candidate from the cost_vector
                 candidate = candidate_list[@interval_index]
                 candidate_cost = @current_cost
-                # Skip all candidates that are banned, are already in the path, or don't get us any closer.
+                # Skip all candidates that are banned, are already in the path, 
+                # or don't get us any closer.
                 while (@banned_points.has_key? candidate.hash) || (@path.include? candidate) || (candidate_cost >= @current_cost)
                   @interval_index += 1
                   # If we've exhausted all possible intervals, jump back
@@ -59,7 +64,8 @@ class HillClimb
                 print er.backtrace.join("\n")
                 throw :jump_back
               rescue RangeError => er
-                # If handle_range_error has not been defined in a subclass, any call will just re-raise the exception
+                # If handle_range_error has not been defined in a subclass, any 
+                # call will just re-raise the exception
                 handle_range_error(er) ? retry : (raise er)
               end
               # Judge success
