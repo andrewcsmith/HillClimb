@@ -62,11 +62,11 @@ class TestHillClimb < Minitest::Test
   end
   
   def test_that_jump_back_decreases_path_size_by_1
-    skip, "Not yet written"
+    skip "Not yet written"
   end
   
   def test_that_jump_back_changes_current_point_to_most_recent
-    skip, "Not yet written"
+    skip "Not yet written"
   end
   
   # == Full Functionality Tests
