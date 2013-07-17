@@ -1,6 +1,6 @@
 # Subclasses of HillClimb should perform a HillClimb search
 # 
-# ## Requirements for subclassing:
+# == Requirements for subclassing:
 # 
 # [:get_cost]             Cost function for a given candidate
 # [:get_candidate_list]   Returns a sorted list of all possible candidates

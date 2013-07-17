@@ -5,3 +5,5 @@ source 'https://rubygems.org'
 
 # Use minitest for testing
 gem 'minitest', group: :test
+
+gem 'rdoc', group: :docs
