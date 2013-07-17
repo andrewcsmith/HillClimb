@@ -7,6 +7,7 @@
 # 
 class HillClimb
   attr_accessor :path, :goal_vector, :start_vector, :current_point, :debug_level, :epsilon, :max_iterations, :banned_points
+  attr_reader :interval_index, :initial_run
   
   ##
   # Requires the +start_vector+ and +goal_vector+. Does not necessarily have to
