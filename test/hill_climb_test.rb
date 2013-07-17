@@ -3,6 +3,7 @@ require_relative '../lib/hill_climb.rb'
 require_relative './test_helpers.rb'
 
 class TestHillClimb < Minitest::Test
+  
   def setup
     @start_vector = [2,4,5]
     @goal = 0.5
@@ -95,5 +96,16 @@ class TestHillClimb < Minitest::Test
     data = @hill_climb.search
     refute data[:failed], "the search failed"
     assert_includes data[:path], [4,5,6], "data only includes: \n#{data}"    
+  end
+  
+  def test_that_climb_gets_closer_with_each_addition_to_path
+    # skip "Should have a series of assertions on every point"
+    @hill_climb.extend GetCandidateList
+    @hill_climb.define_singleton_method(:get_cost) {|c| c == [4,5,6] ? 0 : 0.5}
+    
+    data = @hill_climb.search
+    data[:path][1...data[:path].size].each_with_index do |p, i|
+      assert_operator @hill_climb.send(:get_cost, data[:path][i]), :>, @hill_climb.send(:get_cost, p), "check #{data[:path][i]}.cost > #{p}.cost"
+    end
   end
 end
