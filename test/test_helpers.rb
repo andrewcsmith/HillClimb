@@ -1,3 +1,7 @@
+require 'minitest/autorun'
+require 'factory_girl'
+require_relative '../lib/hill_climb.rb'
+
 # Fake methods that just remove the exceptions raised
 module GetCost
   # Returns a cost of 0
@@ -7,8 +11,9 @@ module GetCost
 end
 
 module GetCandidateList
+  @@candidates = (1..12).to_a.sample(3)
   # Returns a single candidate with the correct answer
   def get_candidate_list
-    [[4,5,6]]
+    [@@candidates]
   end
 end

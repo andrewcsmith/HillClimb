@@ -1,7 +1,9 @@
 require 'rdoc/task'
 
 task :test do
-  ruby 'test/hill_climb_test.rb'
+  Dir.glob("test/*_test.rb") do |file|
+    ruby file
+  end
 end
 
 RDoc::Task.new do |rdoc|

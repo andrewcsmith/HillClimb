@@ -5,5 +5,6 @@ source 'https://rubygems.org'
 
 # Use minitest for testing
 gem 'minitest', group: :test
+gem 'factory_girl', group: :test
 
 gem 'rdoc', group: :docs
